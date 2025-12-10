@@ -17,11 +17,11 @@ public class CategoriaController(MinhaCantinaContexto contextoCantina) : Control
 	// [Atributo]
 	[HttpPost("criar")]
 	public IActionResult CriarCategoria([FromBody] CategoriaRegistroDto requisicao)
-	{		
-		var categoria = Categoria.Criar(requisicao.Nome.ToUpper());
-
+	{
+		Categoria categoria;
 		try
 		{
+			categoria = Categoria.Criar(requisicao.Nome.ToUpper());
 			_contexto.Categorias.Add(categoria);
 			_contexto.SaveChanges();
 		}
@@ -29,13 +29,15 @@ public class CategoriaController(MinhaCantinaContexto contextoCantina) : Control
 		{
 			var excecaoInterna = excecao.InnerException;
 
-			if(excecaoInterna is MySqlException excecaoMySql)
+			if (excecaoInterna is MySqlException excecaoMySql)
 			{
 				if (excecaoMySql.Number == 1062)
 				{
 					return StatusCode(400, "Essa categoria já existe");
 				}
 			}
+
+			throw excecao;
 		}
 		catch (Exception excecao)
 		{

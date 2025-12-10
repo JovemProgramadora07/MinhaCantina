@@ -15,7 +15,7 @@ public class MinhaCantinaContexto(DbContextOptions contextoOpcoes) : DbContext(c
 
 		modelBuilder.Entity<Produto>().Property(produto => produto.Nome).HasColumnType("varchar").HasMaxLength(50).IsRequired();
 		modelBuilder.Entity<Produto>().HasIndex(produto => produto.Nome).IsUnique();
-		modelBuilder.Entity<Produto>().Property(produto => produto.Descricao).HasColumnType("varchar").HasMaxLength(50).IsRequired();
 		modelBuilder.Entity<Produto>().Property(produto => produto.Preco).HasColumnType("decimal(4, 2)").IsRequired();
+		modelBuilder.Entity<Produto>().Property(produto => produto.Descricao).HasColumnType("varchar").HasMaxLength(50).IsRequired(false);
 	}
 }
