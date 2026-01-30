@@ -1,4 +1,5 @@
 ﻿@page "/"
+@using MinhaCantina.Biblioteca.DTOs;
 
 <PageTitle>Home</PageTitle>
 
@@ -14,4 +15,18 @@
 
 	<Card Titulo="Brownie Chocolatudo" Descricao="Brownie de chocolate a base de Nutella" ValorReal="15M" ValorDesconto="10M" CaminhoImagem="/imagens/brownie.webp" />
 
+	@foreach(var produto in listaProdutos)
+	{
+		<Card Titulo="@produto.Nome" ValorReal="@produto.Preco" />
+	}
+
 </section>
+
+@code {
+	private List<ProdutoRespostaDto> listaProdutos = new()
+	{
+		new ProdutoRespostaDto{ Id = 1, Nome = "Coxinha", Preco = 10M },
+		new ProdutoRespostaDto{ Id = 2, Nome = "Coca Cola", Preco = 5M },
+		new ProdutoRespostaDto{ Id = 3, Nome = "Brownie", Preco = 15M },
+	};
+}
