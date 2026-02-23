@@ -5,16 +5,14 @@
 
 <h1>Produtos</h1>
 
-<section class="d-flex gap-3">
-
-	<Card Titulo="Coxinha" Descricao="Salgado frito fitness de frango" ValorReal="10M"
+<section class="parent">
+	 <Card Titulo="Coxinha" Descricao="Salgado frito fitness de frango" ValorReal="10M"
 	ValorDesconto="7M" CaminhoImagem="/imagens/coxinha.webp" />
 
 	<Card Titulo="Coca Cola 350ml" Descricao="Bebida gaseificada e bem gelada" ValorReal="5M"
 	ValorDesconto="4.75M" CaminhoImagem="/imagens/cocacola350.webp" />
 
-	<Card Titulo="Brownie Chocolatudo" Descricao="Brownie de chocolate a base de Nutella" ValorReal="15M" ValorDesconto="10M" CaminhoImagem="/imagens/brownie.webp" />
-
+	<Card Titulo="Brownie Chocolatudo" Descricao="Brownie de chocolate a base de Nutella" ValorReal="15M" ValorDesconto="10M" CaminhoImagem="/imagens/brownie.webp" /> 
 	@foreach(var produto in listaProdutos)
 	{
 		<Card Titulo="@produto.Nome" ValorReal="@produto.Preco" />
