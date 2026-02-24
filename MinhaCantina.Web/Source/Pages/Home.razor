@@ -5,7 +5,7 @@
 @inject IHttpClientFactory ClientFactory
 
 <PageTitle>Home</PageTitle>
-
+<main>
 <h1>Produtos</h1>
 
 <section class="parent">
@@ -14,7 +14,7 @@
 		<Card Titulo="@produto.Nome" ValorReal="@produto.Preco" />
 	}
 </section>
-
+</main>
 @code {
 	private IEnumerable<ProdutoRespostaDto>? listaProdutos = Array.Empty<ProdutoRespostaDto>();
 
