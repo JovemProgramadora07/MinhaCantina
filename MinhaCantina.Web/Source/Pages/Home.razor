@@ -8,11 +8,13 @@
 
 <h1>Produtos</h1>
 
-<section class="parent">
+<section class="container">
+	<div class="row mb-4"> 
 	@foreach(var produto in listaProdutos)
 	{
-		<Card Titulo="@produto.Nome" ValorReal="@produto.Preco" />
+		<Card Titulo="@produto.Nome" ValorReal="@produto.Preco" Categoria="@produto.CategoriaNome" />
 	}
+	</div>
 </section>
 
 @code {
