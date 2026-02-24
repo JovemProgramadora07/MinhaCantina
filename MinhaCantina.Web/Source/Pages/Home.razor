@@ -1,30 +1,32 @@
 ﻿@page "/"
 @using MinhaCantina.Biblioteca.DTOs;
+@using System.Text.Json.Serialization
+@using System.Text.Json
+@inject IHttpClientFactory ClientFactory
 
 <PageTitle>Home</PageTitle>
 
 <h1>Produtos</h1>
 
 <section class="parent">
-	 <Card Titulo="Coxinha" Descricao="Salgado frito fitness de frango" ValorReal="10M"
-	ValorDesconto="7M" CaminhoImagem="/imagens/coxinha.webp" />
-
-	<Card Titulo="Coca Cola 350ml" Descricao="Bebida gaseificada e bem gelada" ValorReal="5M"
-	ValorDesconto="4.75M" CaminhoImagem="/imagens/cocacola350.webp" />
-
-	<Card Titulo="Brownie Chocolatudo" Descricao="Brownie de chocolate a base de Nutella" ValorReal="15M" ValorDesconto="10M" CaminhoImagem="/imagens/brownie.webp" /> 
 	@foreach(var produto in listaProdutos)
 	{
 		<Card Titulo="@produto.Nome" ValorReal="@produto.Preco" />
 	}
-
 </section>
 
 @code {
-	private List<ProdutoRespostaDto> listaProdutos = new()
+	private IEnumerable<ProdutoRespostaDto>? listaProdutos = Array.Empty<ProdutoRespostaDto>();
+
+	protected override async Task OnInitializedAsync()
 	{
-		new ProdutoRespostaDto{ Id = 1, Nome = "Coxinha", Preco = 10M },
-		new ProdutoRespostaDto{ Id = 2, Nome = "Coca Cola", Preco = 5M },
-		new ProdutoRespostaDto{ Id = 3, Nome = "Brownie", Preco = 15M },
-	};
+		var cliente = ClientFactory.CreateClient();
+		using var resposta = await cliente.GetAsync("https://localhost:7207/Produto/pegar_todos");
+
+		if (resposta.IsSuccessStatusCode)
+		{
+			var resultado = await resposta.Content.ReadFromJsonAsync<IEnumerable<ProdutoRespostaDto>>();
+			listaProdutos = resultado ?? Array.Empty<ProdutoRespostaDto>();
+		}
+	}
 }
