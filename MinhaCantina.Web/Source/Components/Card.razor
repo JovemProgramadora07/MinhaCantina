@@ -1,19 +1,56 @@
-﻿<div class="card g-col-2" >
-	<img src="@CaminhoImagem" class="card-img-top" alt="...">
-	<div class="card-body">
-		<h5 class="card-title">@Titulo</h5>
-		<p class="card-text">@Descricao</p>
-		<div class="d-flex align-items-end mb-3">
-			<span class="text-muted text-decoration-line-through">R$ @ValorReal</span>
-			<span class="h4 mb-0 ms-2 text-success fw-bold">R$ @ValorDesconto</span>
+﻿<div class="col-sm-6 col-md-4 col-lg-3">
+
+	<div class="card card-product shadow-sm h-100">
+		<span class="badge-stock @PegaCor()">@StatusProduto</span>
+		<img src="imagens/brownie.webp" class="card-img-top" alt="...">
+
+
+		<div class="card-body">
+			<h5 class="card-title fw-bold mb-1">@Titulo</h5>
+			<p class="text-muted small mb-2">@Categoria</p>
+			<div class="d-flex justify-content-between align-items-center">
+				<span class="price-tag">R$ @ValorReal</span>
+				<button class="btn btn-outline-primary btn-sm rounded-pill">Ver mais</button>
+			</div>
 		</div>
 	</div>
 </div>
-
 @code {
 	[Parameter] public string Titulo { get; set; } = string.Empty;
 	[Parameter] public string Descricao { get; set; } = string.Empty;
+	[Parameter] public string Categoria { get; set; } = string.Empty;
 	[Parameter] public decimal ValorReal { get; set; }
 	[Parameter] public decimal ValorDesconto { get; set; }
 	[Parameter] public string CaminhoImagem { get; set; } = string.Empty;
+	[Parameter] public Status StatusProduto { get; set; } = Status.Disponivel;
+
+	protected override void OnInitialized()
+	{
+		Array values = Enum.GetValues(typeof(Status));
+		Random random = new Random();
+		Status randomBar = (Status)values.GetValue(random.Next(values.Length));
+		StatusProduto = randomBar;
+	}
+
+	public enum Status
+	{
+		Disponivel,
+		Esgotado,
+		PoucasUnidades,
+	}
+
+	private string PegaCor()
+	{
+		switch (StatusProduto)
+		{
+			case Status.Disponivel:
+				return "bg-success";
+				
+			case Status.Esgotado:
+				return "bg-danger";
+				
+			default:
+				return "bg-warning";
+		}
+	}
 }
