@@ -15,6 +15,26 @@
 <body>
     <Routes />
     <script src="_framework/blazor.web.js"></script>
+    <script>
+            
+        window.abreModal = (titulo, caminhoImagem, descricao, preco) => {
+            var modal = document.getElementById("productModal");
+            var modalTitle = document.getElementById("modalTitle");
+            var modalImg = document.getElementById("modalImg");
+            var modalDesc = document.getElementById("modalDesc");
+            var modalPrice = document.getElementById("modalPrice");
+            modal.style.display = "block";
+            modalTitle.innerText = titulo;
+            modalImg.src = caminhoImagem;
+            modalDesc.innerText = descricao;
+            modalPrice.innerText = `R$ ${Number(preco).toFixed(2)}`;
+        }
+
+        window.fechaModal = () => {
+            var modal = document.getElementById("productModal");
+            modal.style.display = "none";
+        }
+    </script>
 </body>
 
 </html>
