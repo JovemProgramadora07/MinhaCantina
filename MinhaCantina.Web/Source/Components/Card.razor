@@ -1,4 +1,5 @@
-﻿@inject IJSRuntime JS
+﻿@using MinhaCantina.Biblioteca.DTOs
+@inject IJSRuntime JS
 @rendermode InteractiveServer
 
 <div class="col-sm-6 col-md-4 col-lg-3">
@@ -9,22 +10,19 @@
 
 
 		<div class="card-body">
-			<h5 class="card-title fw-bold mb-1">@Titulo</h5>
-			<p class="text-muted small mb-2">@Categoria</p>
+			<h5 class="card-title fw-bold mb-1">@Produto.Nome</h5>
+			<p class="text-muted small mb-2">@Produto.CategoriaNome</p>
 			<div class="d-flex justify-content-between align-items-center">
-				<span class="price-tag">R$ @Preco</span>
-				<button @onclick="AbreModal" class="btn btn-outline-primary btn-sm rounded-pill">Ver mais</button>
+				<span class="price-tag">R$ @Produto.Preco</span>
+				<button @onclick="() => VerMais.InvokeAsync(Produto)" class="btn btn-outline-primary btn-sm rounded-pill">Ver mais</button>
 			</div>
 		</div>
 	</div>
 </div>
 @code {
-	[Parameter] public string Titulo { get; set; } = string.Empty;
-	[Parameter] public string Descricao { get; set; } = string.Empty;
-	[Parameter] public string Categoria { get; set; } = string.Empty;
-	[Parameter] public decimal Preco { get; set; }
-	[Parameter] public string CaminhoImagem { get; set; } = string.Empty;
+	[Parameter] public ProdutoRespostaDto Produto { get; set; }
 	[Parameter] public Status StatusProduto { get; set; } = Status.Disponivel;
+	[Parameter] public EventCallback <ProdutoRespostaDto> VerMais { get; set; }
 
 	protected override void OnInitialized()
 	{
@@ -56,8 +54,5 @@
 		}
 	}
 
-	private async void AbreModal()
-	{
-		await JS.InvokeVoidAsync("abreModal", [Titulo, CaminhoImagem, Descricao, Preco]);
-	}
+
 }

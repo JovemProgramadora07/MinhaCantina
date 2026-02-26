@@ -6,6 +6,7 @@ public class Produto
 	public string Nome { get; private set; } = string.Empty;
 	public decimal Preco { get; private set; }
 	public string? Descricao { get; private set; }
+	public string ImagemURL { get; private set; } = string.Empty;
 	public Categoria Categoria { get; private set; } = null!;
 
 	// Construtor
@@ -18,7 +19,7 @@ public class Produto
 	// 2º Verificar se o precoProduto é negativo
 	//}
 
-	public static Produto Criar(string nomeProduto, decimal precoProduto, Categoria categoriaProduto)
+	public static Produto Criar(string nomeProduto, decimal precoProduto, Categoria categoriaProduto, string imagemURL)
 	{
 		if (string.IsNullOrWhiteSpace(nomeProduto))
 		{
@@ -34,7 +35,8 @@ public class Produto
 			{
 				Nome = nomeProduto,
 				Preco = precoProduto,
-				Categoria = categoriaProduto
+				Categoria = categoriaProduto,
+				ImagemURL = imagemURL     
 			};
 		}
 	}

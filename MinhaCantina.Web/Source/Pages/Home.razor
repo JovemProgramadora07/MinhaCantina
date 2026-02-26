@@ -3,6 +3,7 @@
 @using System.Text.Json.Serialization
 @using System.Text.Json
 @inject IHttpClientFactory ClientFactory
+@rendermode InteractiveServer
 
 <PageTitle>Home</PageTitle>
 
@@ -12,17 +13,15 @@
 	<div class="row mb-4"> 
 	@foreach(var produto in listaProdutos)
 	{
-		<Card Titulo="@produto.Nome" Preco="@produto.Preco" Categoria="@produto.CategoriaNome" />
+		<Card Produto="produto" VerMais="AbrirDetalhes" />
 	}
 	</div>
-	<Modal>
-
-
-	</Modal>
+	<Modal @ref="referenciaModal"></Modal>
 </section>
 
 @code {
 	private IEnumerable<ProdutoRespostaDto>? listaProdutos = Array.Empty<ProdutoRespostaDto>();
+	private Modal referenciaModal;
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -34,5 +33,9 @@
 			var resultado = await resposta.Content.ReadFromJsonAsync<IEnumerable<ProdutoRespostaDto>>();
 			listaProdutos = resultado ?? Array.Empty<ProdutoRespostaDto>();
 		}
+	}
+	private void AbrirDetalhes (ProdutoRespostaDto produto)
+	{
+		referenciaModal.Abrir(produto);
 	}
 }
