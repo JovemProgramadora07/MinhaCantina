@@ -1,22 +1,132 @@
 ﻿@page "/login"
 
-<PageTitle>Entrar com a sua conta</PageTitle>
+<div class="login-container d-flex align-items-center justify-content-center">
+    <div class="login-card row shadow-lg overflow-hidden justify-content-center">
 
-<h3>Login</h3>
+      
+        <div class="col-lg-6 p-5 d-flex flex-column justify-content-center bg-white">
+            <div class="mb-4 text-center text-lg-start">
+                <div class="logo-placeholder mb-4">
+                
+                    <span class="fs-3 fw-bold text-danger">Minha Cantina</span>
+                </div>
+                <h2 class="fw-bold mb-1">Sistema de Gestão</h2>
+                <p class="text-muted">Entre com seus dados para continuar.</p>
+            </div>
 
-<form class="mt-5" style="max-width: 250px;">
-    <div class="form-outline mb-4">
-        <label class="form-label" for="usuario">Username</label>
-        <input type="text" id="usuario" class="form-control" />
+            <form>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">E-mail</label>
+                    <input type="email" class="form-control custom-input" placeholder="exemplo@email.com" required>
+                </div>
+
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between">
+                        <label class="form-label fw-semibold">Senha</label>
+                        <a href="#" class="text-decoration-none small text-danger fw-medium">Esqueceu a senha?</a>
+                    </div>
+                    <input type="password" class="form-control custom-input" placeholder="••••••••" required>
+                </div>
+
+                <div class="form-check mb-4">
+                    <input class="form-check-input" type="checkbox" id="rememberMe">
+                    <label class="form-check-label text-muted" for="rememberMe">
+                        Lembrar de mim
+                    </label>
+                </div>
+
+                <button type="submit" class="btn btn-danger w-100 py-2 mb-4 fw-bold shadow-sm">
+                    Entrar
+                </button>
+
+                <div class="text-center position-relative mb-4">
+                    <hr class="text-muted">
+                    <span class="bg-white px-3 position-absolute top-50 start-50 translate-middle text-muted small">OU</span>
+                </div>
+
+               
+
+                <p class="text-center mt-4 mb-0 text-muted">
+                    Não tem uma conta? <a href="/signup" class="text-danger fw-bold text-decoration-none">Cadastre-se</a>
+                </p>
+            </form>
+        </div>
+
+        
+        
     </div>
+</div>
 
-    <div class="form-outline mb-4">
-        <label class="form-label" for="senha">Senha</label>
-        <input type="password" id="senha" class="form-control" />
-    </div>
+<style>
+    .login-container {
+        min-height: 100vh;
+        background-color: #f8f9fa;
+        padding: 20px;
+    }
 
-    <input type="button" class="btn btn-primary btn-block mb-4" value="Entrar">
-</form>
+    .login-card {
+        width: 100%;
+        max-width: 1000px;
+        border-radius: 20px;
+        min-height: 600px;
+        background-color: #fff;
+    }
+
+    .custom-input {
+        padding: 0.75rem 1rem;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+    }
+
+        .custom-input:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+    .btn-primary {
+        background-color: #6366f1;
+        border: none;
+        border-radius: 10px;
+    }
+
+        .btn-primary:hover {
+            background-color: #4f46e5;
+        }
+
+    .branding-panel {
+        background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+        position: relative;
+        overflow: hidden;
+    }
+
+       
+        .branding-panel::before {
+            content: "";
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            top: -100px;
+            right: -100px;
+        }
+
+        .branding-panel::after {
+            content: "";
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            bottom: -50px;
+            left: -50px;
+        }
+
+    .branding-content {
+        position: relative;
+        z-index: 2;
+    }
+</style>
 
 @code {
 
