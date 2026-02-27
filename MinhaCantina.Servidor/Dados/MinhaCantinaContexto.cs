@@ -18,6 +18,7 @@ public class MinhaCantinaContexto(DbContextOptions contextoOpcoes) : DbContext(c
 		modelBuilder.Entity<Produto>().HasIndex(produto => produto.Nome).IsUnique();
 		modelBuilder.Entity<Produto>().Property(produto => produto.Preco).HasColumnType("decimal(4, 2)").IsRequired();
 		modelBuilder.Entity<Produto>().Property(produto => produto.Descricao).HasColumnType("varchar").HasMaxLength(50).IsRequired(false);
+		modelBuilder.Entity<Produto>().Property(produto => produto.ImagemURL).HasColumnType("text").IsRequired();
 
 		// Configurando o Usuario
 		// Modifica a propriedade Nome

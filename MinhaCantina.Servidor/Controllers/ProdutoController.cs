@@ -26,7 +26,7 @@ public class ProdutoController(MinhaCantinaContexto cantinaContexto) : Controlle
 
 		try
 		{
-			produto = Produto.Criar(requisicao.Nome, requisicao.Preco, categoria);
+			produto = Produto.Criar(requisicao.Nome, requisicao.Preco, categoria, requisicao.ImagemURL);
 			_contexto.Produtos.Add(produto);
 			_contexto.SaveChanges();
 		}
@@ -60,7 +60,9 @@ public class ProdutoController(MinhaCantinaContexto cantinaContexto) : Controlle
 			Id = produtoExemplo.Id,
 			Nome = produtoExemplo.Nome,
 			Preco = produtoExemplo.Preco,
-			CategoriaNome = produtoExemplo.Categoria.Nome
+			CategoriaNome = produtoExemplo.Categoria.Nome,
+			ImagemURL = produtoExemplo.ImagemURL, 
+			Descricao = produtoExemplo.Descricao
 		}).ToList();
 
 		return StatusCode(200, produtos);

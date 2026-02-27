@@ -1,0 +1,101 @@
+﻿.modal-media {
+    width: 60%; /* Define que a imagem ocupa 60% da largura do modal */
+    margin: 1.5rem auto 0; /* Centraliza horizontalmente e dá espaço no topo */
+    aspect-ratio: 1 / 1; /* Força o formato quadrado perfeito */
+    overflow: hidden;
+    border-radius: 8px; /* Cantos levemente arredondados para um look moderno */
+    border: 1px solid #eee;
+}
+
+    .modal-media img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* Garante que a foto preencha o quadrado sem distorcer */
+        display: block;
+    }
+
+
+/* Garante que o modal não cresça além da tela em dispositivos pequenos */
+.modal-container {
+    max-width: 450px;
+    max-height: 90vh; /* Máximo de 90% da altura da tela */
+    display: flex;
+    flex-direction: column;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.modal-header {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Ajuste no corpo para o texto não colar na imagem */
+.modal-body {
+    padding: 1rem 1.5rem;
+    text-align: center; /* Centraliza o texto para alinhar com a imagem quadrada */
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px); /* Efeito de desfoque no fundo */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-footer {
+    padding: 1rem 1.5rem;
+    border-top: 1px solid #eee;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+/* Botões */
+.btn-primary {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn-secondary {
+    background: #6c757d;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

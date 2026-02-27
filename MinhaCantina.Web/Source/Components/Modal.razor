@@ -1,36 +1,42 @@
-﻿@using static MinhaCantina.Web.Source.Components.Card
-@inject IJSRuntime JS
-@rendermode InteractiveServer
+﻿@using MinhaCantina.Biblioteca.DTOs
+@using static MinhaCantina.Web.Source.Components.Card
 
-<div class="modal fade show" id="productModal" tabindex="-1" style="display:none" aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered">
-		<div class="modal-content border-0 shadow">
-			<div class="modal-header">
-				<h5 class="modal-title fw-bold" id="modalTitle"></h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @onclick="FecharModal"></button>
+@if (estaVisivel)
+{
+    <div class="modal-overlay">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3>@ProdutoSelecionado.Nome</h3>
+                <button class="close-btn" @onclick="FecharModal">&times;</button>
+            </div>
+			<div class="modal-media">
+				<img src="@ProdutoSelecionado.ImagemURL" alt="Destaque" class="modal-img" />
 			</div>
-			<div class="modal-body text-center">
-				<img id="modalImg" src="imagens/brownie.webp" class="img-fluid rounded mb-3 product-img w-100" alt="Produto" />
-				<p id="modalDesc" class="text-muted"></p>
-				<div class="d-flex justify-content-between align-items-center px-3">
-					<span id="modalPrice" class="price-tag"></span>
-					<span id="modalStock" class="badge bg-info"></span>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
+            <div class="modal-body">
+                <p>@ProdutoSelecionado.Descricao</p>
+            </div>
+			<div class="modal-footer">
 
+				<span>@ProdutoSelecionado.Preco</span>
+				
+
+			</div>
+        </div>
+    </div>
+}
 @code {
-	// [Parameter] public string Titulo { get; set; } = string.Empty;
-	// [Parameter] public string Descricao { get; set; } = string.Empty;
-	// [Parameter] public decimal ValorReal { get; set; }
-	// [Parameter] public decimal ValorDesconto { get; set; }
-	// [Parameter] public string CaminhoImagem { get; set; } = string.Empty;
-	// [Parameter] public Status StatusProduto { get; set; } = Status.Disponivel;
+	public ProdutoRespostaDto ProdutoSelecionado { get; set; }
+	private bool estaVisivel = false;
 
-	private async void FecharModal()
+	public void Abrir(ProdutoRespostaDto produto)
 	{
-		await JS.InvokeVoidAsync("fechaModal");
+		ProdutoSelecionado = produto;
+		estaVisivel = true;
+		StateHasChanged();
+	}
+
+	private void FecharModal()
+	{
+		estaVisivel = false;
 	}
 }
