@@ -49,6 +49,42 @@ h1:focus {
 .darker-border-checkbox.form-check-input {
     border-color: #929292;
 }
+.parent {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    grid-column-gap: 16px;
+    grid-row-gap: 16px;
+}
+
+footer{
+    background:#212529;
+    color: white;
+    padding: 40px 0;
+    margin-top: 60px;
+}
+
+.carousel-item {
+    transition: all .6s ease-in-out;
+}
+
+body.home {
+    background-color: var(--backgroundColor);
+    color: var(--textColor);
+}
+
+body {
+    cursor: none;
+}
+
+#customCursor {
+    width: 20px;
+    height: 20px;
+    background-color: #ece2cd;
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
 
 .badge-stock {
     color: white;
