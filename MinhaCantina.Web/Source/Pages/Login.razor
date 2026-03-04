@@ -1,54 +1,77 @@
-﻿@page "/login"
+@page "/login"
 @using MinhaCantina.Biblioteca.DTOs
 @using System.Text.Json
 @using System.Text
 @using static System.Net.Mime.MediaTypeNames
 @inject IHttpClientFactory Mediador
+@inject IJSRuntime JS 
+@rendermode InteractiveServer
+
+<div class="login-container d-flex align-items-center justify-content-center">
+    <div class="login-card row shadow-lg overflow-hidden justify-content-center">
+
+      
+        <div class="col-lg-6 p-5 d-flex flex-column justify-content-center bg-white">
+            <div class="mb-4 text-center text-lg-start">
+                <div class="logo-placeholder mb-4">
+                
+                    <span class="fs-3 fw-bold text-danger">Minha Cantina</span>
+                </div>
+                <h2 class="fw-bold mb-1">Sistema de Gestão</h2>
+                <p class="text-muted">Entre com seus dados para continuar.</p>
+            </div>
+
+            <form>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Username</label>
+                    <input type="text" class="form-control custom-input" placeholder="Username" @bind="LoginDto.Username" required>
+                </div>
+
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between">
+                        <label class="form-label fw-semibold">Senha</label>
+                     
+                    </div>
+                    <input type="password" class="form-control custom-input" @bind="LoginDto.Senha" placeholder="••••••••" required>
+                </div>
 
 
-<PageTitle>Entrar com a sua conta</PageTitle>
+                <button type="button" @onclick="Autenticar" class="btn btn-danger w-100 py-2 mb-4 fw-bold shadow-sm">
+                    Entrar
+                </button>
 
-<h3>Login</h3>
+               
+              
+            </form>
+        </div>
 
-<form class="mt-5" style="max-width: 250px;">
-    <div class="form-outline mb-4">
-        <label class="form-label" for="usuario">Username</label>
-        <input type="text" id="usuario" class="form-control" />
+        
+        
     </div>
+</div>
 
-    <div class="form-outline mb-4">
-        <label class="form-label" for="senha">Senha</label>
-        <input type="password" id="senha" class="form-control" />
-    </div>
-
-    <input type="button" class="btn btn-primary btn-block mb-4" value="Entrar">
-</form>
 
 @code {
-    private UsuarioLoginDto InfoLogin { get; set; }
+    private UsuarioLoginDto LoginDto { get; set; } = new UsuarioLoginDto();
 
     private async void Autenticar()
-    {
-        var usuario = new UsuarioLoginDto()
-            {
-                Username = "Yasmin",
-                Senha = "GatinhaFofoqueira"
-            };
+    { 
 
-        var requisicao = new StringContent
-        (JsonSerializer.Serialize(usuario),
-        Encoding.UTF8,
-        Application.Json);
+        var requisicao = new StringContent(
+            JsonSerializer.Serialize(LoginDto),
+            Encoding.UTF8,
+            Application.Json
+        );
 
-        var Carteiro = Mediador.CreateClient();
+        var carteiro = Mediador.CreateClient();
 
-        var resposta = await Carteiro.PostAsync("https://localhost:7207/login ", requisicao);
+        var resposta = await carteiro.PostAsync("https://localhost:7207/login", requisicao);
 
-
-        if (resposta.IsSuccessStatusCode) ;
+        if (resposta.IsSuccessStatusCode)
         {
-            var ConteudoResposta = await resposta.Content.ReadFromJsonAsync<UsuarioRespostaDto>();
-
+            var conteudoResposta = await resposta.Content.ReadFromJsonAsync<UsuarioRespostaDto>();
+            await JS.InvokeVoidAsync("alert", conteudoResposta.Nome);
         }
     }
+
 }
