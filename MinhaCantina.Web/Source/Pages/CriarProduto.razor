@@ -1,0 +1,78 @@
+﻿@page "/cria-produto"
+@using MinhaCantina.Biblioteca.DTOs
+@using System.Text.Json
+@using MinhaCantina.Biblioteca.Modelos
+@using System.Text
+@using static System.Net.Mime.MediaTypeNames
+@inject IHttpClientFactory Mediador
+@rendermode InteractiveServer
+
+
+<PageTitle>Criar um Produto</PageTitle>
+<header class="container">
+	<div class="d-flex align-items-center p-3 my-3 text-black bg bg-purple rounded shadow-sm">
+
+		<h3 class="my-3 p-3 bg-body rounded shadow-sm">Registre os produtos aqui</h3>
+
+	</div>
+</header>
+<main class="container">
+	<div class="p-4 p-md-5 mb-4 rounded text-body-emphasis bg-body-secondary" style="--bs-border-opacity: .5;">
+		<div class="mb-3 ">
+			<label for="formGroupExampleInput" class="form-label">Insira o nome do produto.</label>
+			<input @bind="Produto.Nome" type="text" class="form-control d-inline-flex focus-ring py-1 px-2 text-decoration-none border rounded-2" id="formGroupExampleInput" placeholder="Nome">
+		</div>
+
+		<label for="formGroupExampleInput" class="form-label w-25">Insira o preço.</label>
+		<div class="input-group mb-3">
+			<input @bind="Produto.Preco" type="text" class="form-control" aria-label="Insira o preço">
+		</div>
+
+		<label for="formGroupExampleInput" class="form-label">Escreva a descrição do produto.</label>
+		<div class="form-floating mb-3">
+			<textarea @bind="Produto.Descricao" class="form-control" placeholder="" id="floatingTextarea2" style="height: 100px"></textarea>
+			<label for="floatingTextarea2">Descrição</label>
+		</div>
+
+		<select class="form-select" aria-label="Default select example">
+			<option disabled selected>Selecione uma categoria.</option>
+			<option value="1">Salgados</option>
+			<option value="2">Doces</option>
+			<option value="3">Bebidas</option>
+			<option value="4">Saudáveis</option>
+			<option value="6">Fritos</option>
+		</select>
+
+		<label for="formGroupExampleInput" class="form-label">Adicione uma imagem ao produto.</label>
+		<div class="mb-3">
+			<input @bind="Produto.ImagemURL" class="form-control" type="text" id="formFile">
+		</div>
+		<button class="border border-4 rounded-3 w-50 p-3 p-sm" @onclick="CriaProduto">Cria produto</button>
+	</div>
+</main>
+@code {
+	private ProdutoRegistroDto Produto = new ProdutoRegistroDto();
+
+	private async void CriaProduto()
+	{
+
+		var requisicao = new StringContent
+		(JsonSerializer.Serialize(Produto),
+		Encoding.UTF8,
+		Application.Json);
+
+		var Carteiro = Mediador.CreateClient();
+
+
+		var resposta = await Carteiro.PostAsync("https://localhost:7207/Produto/criar", requisicao);
+
+		if (resposta.IsSuccessStatusCode) ;
+		{
+			var ConteudoResposta = await resposta.Content.ReadFromJsonAsync<UsuarioRespostaDto>();
+
+		}
+
+	}
+
+
+}

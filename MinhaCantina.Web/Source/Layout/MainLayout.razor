@@ -1,58 +1,11 @@
 ﻿@inherits LayoutComponentBase
 
-<nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top shadow-lg">
-	<div class="container">
-		<a class="navbar-brand d-flex flex-row gap-1 align-items-center text-danger"> 
 
-		<img src="imagens/coxona.jpg" height="20" width="20"> MINHA CANTINA
-		</a>
-		<button class="navbar-toggler">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-		<div class="collapse navbar-collapse" id="navbarNav">
-			<ul class="navbar-nav ms-auto align-item-center">
-				<li class="nav-item">
-					<div class="input-group">
-						<input type="text" id="searchInput" class="form-control" placeholder="Buscar alimento...">
-						<span class="input-group-text text-white" style="background-color:#f0aa42; border-color: #f0aa42;">🔍</span>
-					</div>
-				</li>
-			</ul>
-		</div>
-	</div>
-</nav>
 
-<header id="carouselExample" class="carousel slide" data-bs-ride="carousel">
-	<div class="carousel-inner">
-		<div class="carousel-item active">
-			<img src="https://thumbs.dreamstime.com/b/vista-vertical-superior-da-mesa-cheia-de-comida-e-bebidas-pessoas-felizes-amigos-celebrando-divirtam-se-comendo-juntos-divertindo-179552095.jpg" style="height: 300px;" class="d-block w-100 object-fit-cover" alt="...">
-		</div>
-		<div class="carousel-item">
-			<img src="https://static.vecteezy.com/ti/fotos-gratis/t2/76051857-amor-comida-e-feliz-familia-cafe-da-manha-escovar-ou-almoco-para-grupo-do-pessoas-comendo-vinculo-e-apreciar-qualidade-tempo-junto-felicidade-manha-e-com-fome-grande-familia-sorrir-enquanto-relaxar-dentro-jantar-quarto-foto.jpg" style="height: 300px;" class="d-block w-100 object-fit-cover" alt="...">
-		</div>
-	</div>
-	<button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-		<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-		<span class="visually-hidden">Previous</span>
-	</button>
-	<button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-		<span class="carousel-control-next-icon" aria-hidden="true"></span>
-		<span class="visually-hidden">Next</span>
-	</button>
-</header>
-
-<body class="home" data-bgcolor="#181716" data-textcolor="#ece2cd" style="opacity: 1;">
-	<div id="customCursor" class style="transform: transalte(942px, 132px);">
-		<div id="cursor" style="color: color(display-p3 0.09412 0.0902 0.08627;)">
-			<div id="dataDisplay" style="background-color: color(display-p3 0.09412 0.0902 0.08627); color: color(display-p3 0.92549 0.88627 0.80392);"></div>
-		</div>
-	</div>
-</body>
 <main>
-	<article class="content px-4">
 		@Body
-	</article>
 </main>
+
 <div id="blazor-error-ui">
 	An unhandled error has occurred.
 	<a href="" class="reload">Reload</a>
@@ -64,4 +17,3 @@
 		<small class="text-muted">Horário de funcionamento: 07:00 às 22:00</small>
 	</div>
 </footer>
-<script src="js/cursor.js"></script>
