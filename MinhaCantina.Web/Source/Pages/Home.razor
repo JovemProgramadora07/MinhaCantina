@@ -8,10 +8,9 @@
 <PageTitle>Home</PageTitle>
 
 
-<main>
-<h1>Produtos</h1> 
 
-<section class="container">
+
+<section class="container mt-4">
 	<div class="row mb-4"> 
 	@foreach(var produto in listaProdutos)
 	{
@@ -20,7 +19,7 @@
 	</div>
 	<Modal @ref="referenciaModal"></Modal>
 </section>
-</main>
+
 
 @code {
 	private IEnumerable<ProdutoRespostaDto>? listaProdutos = Array.Empty<ProdutoRespostaDto>();
