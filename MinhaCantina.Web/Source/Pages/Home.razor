@@ -73,13 +73,8 @@
         {
             listaProdutos = await respostaProdutos.Content.ReadFromJsonAsync<IEnumerable<ProdutoRespostaDto>>();
         }
-
-		if (resposta.IsSuccessStatusCode)
-		{
-			var resultado = await resposta.Content.ReadFromJsonAsync<IEnumerable<ProdutoRespostaDto>>();
-			listaProdutos = resultado ?? Array.Empty<ProdutoRespostaDto>();
-		}
 	}
+
 	private void AbrirDetalhes(ProdutoRespostaDto produto)
 	{
 		referenciaModal.Abrir(produto);
