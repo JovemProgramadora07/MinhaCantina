@@ -55,21 +55,17 @@
 
 	private async void CriaProduto()
 	{
-
 		var requisicao = new StringContent
 		(JsonSerializer.Serialize(Produto),
 		Encoding.UTF8,
 		Application.Json);
 
 		var Carteiro = Mediador.CreateClient();
-
-
 		var resposta = await Carteiro.PostAsync("https://localhost:7207/Produto/criar", requisicao);
 
 		if (resposta.IsSuccessStatusCode) ;
 		{
 			var ConteudoResposta = await resposta.Content.ReadFromJsonAsync<UsuarioRespostaDto>();
-
 		}
 
 	}
