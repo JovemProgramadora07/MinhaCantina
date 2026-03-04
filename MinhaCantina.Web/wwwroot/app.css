@@ -102,3 +102,11 @@ body.home {
     overflow: hidden;
     height: 100%;
 }
+
+.carousel-caption {
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+    width: 100%;
+    left: 0;
+    bottom: 0;
+    padding-bottom: 50px;
+}
