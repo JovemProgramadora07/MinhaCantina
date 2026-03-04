@@ -9,8 +9,29 @@
 
 
 <main>
+	<nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top shadow-lg ">
+		<div class="container">
+			<a class="navbar-brand d-flex flex-row gap-1 align-items-center text-danger">
 
-	<header id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+				<img src="imagens/coxona.jpg" height="20" width="20"> MINHA CANTINA
+			</a>
+			<button class="navbar-toggler">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarNav">
+				<ul class="navbar-nav ms-auto align-item-center">
+					<li class="nav-item">
+						<div class="input-group">
+							<input type="text" id="searchInput" class="form-control" placeholder="Buscar alimento...">
+							<span class="input-group-text text-white" style="background-color:#f0aa42; border-color: #f0aa42;">🔍</span>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<header id="carouselExample" class="carousel slide " data-bs-ride="carousel">
 		<div class="carousel-inner">
 			<div class="carousel-item active">
 				<img src="https://thumbs.dreamstime.com/b/vista-vertical-superior-da-mesa-cheia-de-comida-e-bebidas-pessoas-felizes-amigos-celebrando-divirtam-se-comendo-juntos-divertindo-179552095.jpg" style="height: 300px;" class="d-block w-100 object-fit-cover" alt="...">
@@ -29,15 +50,15 @@
 		</button>
 	</header>
 
-<section class="container">
-	<div class="row mb-4"> 
-	@foreach(var produto in listaProdutos)
-	{
-		<Card Produto="produto" VerMais="AbrirDetalhes" />
-	}
-	</div>
-	<Modal @ref="referenciaModal"></Modal>
-</section>
+	<section class="container">
+		<div class="row mb-4">
+			@foreach (var produto in listaProdutos)
+			{
+				<Card Produto="produto" VerMais="AbrirDetalhes" />
+			}
+		</div>
+		<Modal @ref="referenciaModal"></Modal>
+	</section>
 </main>
 
 @code {
@@ -55,7 +76,7 @@
 			listaProdutos = resultado ?? Array.Empty<ProdutoRespostaDto>();
 		}
 	}
-	private void AbrirDetalhes (ProdutoRespostaDto produto)
+	private void AbrirDetalhes(ProdutoRespostaDto produto)
 	{
 		referenciaModal.Abrir(produto);
 	}
