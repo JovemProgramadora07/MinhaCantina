@@ -55,24 +55,35 @@
 
 	private async void CriaProduto()
 	{
-
 		var requisicao = new StringContent
 		(JsonSerializer.Serialize(Produto),
 		Encoding.UTF8,
 		Application.Json);
 
 		var Carteiro = Mediador.CreateClient();
-
-
 		var resposta = await Carteiro.PostAsync("https://localhost:7207/Produto/criar", requisicao);
 
 		if (resposta.IsSuccessStatusCode) ;
 		{
 			var ConteudoResposta = await resposta.Content.ReadFromJsonAsync<UsuarioRespostaDto>();
-
 		}
 
 	}
 
+	private IEnumerable<CategoriaRespostaDto>? listaCategorias = Array.Empty<CategoriaRespostaDto>();
+	private int categoriaSelecionadaId;
 
+	private Modal referenciaModal;
+
+	protected override async Task OnInitializedAsync()
+	{
+		var cliente = Mediador.CreateClient();
+		using var respostaCategorias = await cliente.GetAsync("https://localhost:7207/Categoria/pegar_todas");
+		if (respostaCategorias.IsSuccessStatusCode)
+		{
+			var resultadoCat = await respostaCategorias.Content.ReadFromJsonAsync<IEnumerable<CategoriaRespostaDto>>();
+			listaCategorias = resultadoCat ?? Array.Empty<CategoriaRespostaDto>();
+		}
+
+	}
 }
