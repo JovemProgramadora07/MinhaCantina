@@ -16,7 +16,7 @@ public class AutenticacaoController(MinhaCantinaContexto contextoCantina) : Cont
 	// Pegar, Criar, Alterar, Excluir
 	// Sintaxe do Método
 	// modificadorAcesso tipoRetorno NomeMetodo(tipoParametro nomeParametro)
-	[HttpGet("/login")]
+	[HttpPost("/login")]
 	public IActionResult Login([FromBody] UsuarioLoginDto requisicao)
 	{
 		// 1º: Verificar se o usuário existe
