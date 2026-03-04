@@ -1,4 +1,10 @@
 ﻿@page "/login"
+@using MinhaCantina.Biblioteca.DTOs
+@using System.Text.Json
+@using System.Text
+@using static System.Net.Mime.MediaTypeNames
+@inject IHttpClientFactory Mediador
+
 
 <PageTitle>Entrar com a sua conta</PageTitle>
 
@@ -19,5 +25,30 @@
 </form>
 
 @code {
+    private UsuarioLoginDto InfoLogin { get; set; }
 
+    private async void Autenticar()
+    {
+        var usuario = new UsuarioLoginDto()
+            {
+                Username = "Yasmin",
+                Senha = "GatinhaFofoqueira"
+            };
+
+        var requisicao = new StringContent
+        (JsonSerializer.Serialize(usuario),
+        Encoding.UTF8,
+        Application.Json);
+
+        var Carteiro = Mediador.CreateClient();
+
+        var resposta = await Carteiro.PostAsync("https://localhost:7207/login ", requisicao);
+
+
+        if (resposta.IsSuccessStatusCode) ;
+        {
+            var ConteudoResposta = await resposta.Content.ReadFromJsonAsync<UsuarioRespostaDto>();
+
+        }
+    }
 }

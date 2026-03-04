@@ -1,5 +1,71 @@
-﻿<h3>CriarProduto</h3>
+﻿@page "/cria-produto"
+@using MinhaCantina.Biblioteca.DTOs
+@using System.Text.Json
+@using MinhaCantina.Biblioteca.Modelos
+@using System.Text
+@using static System.Net.Mime.MediaTypeNames
+@inject IHttpClientFactory Mediador
+@rendermode InteractiveServer
 
+<h3>CriarProduto</h3>
+
+<PageTitle>Criar um Produto</PageTitle>
+
+<h3 class="h4 pb-2 mb-4 text-danger border-bottom border-danger">Registre os produtos aqui</h3>
+
+<div class="border border-4 border-danger rounded-3 w-50 p-3 p-sm card text-bg-primary " style="--bs-border-opacity: .5;">
+	<div class="mb-3 ">
+		<label for="formGroupExampleInput" class="form-label">Insira o nome do produto.</label>
+		<input type="text" class="form-control d-inline-flex focus-ring py-1 px-2 text-decoration-none border rounded-2" id="formGroupExampleInput" placeholder="Nome">
+	</div>
+
+	<label for="formGroupExampleInput" class="form-label w-25">Insira o preço.</label>
+	<div class="input-group mb-3">
+		<input type="text" class="form-control" aria-label="Insira o preço">
+	</div>
+
+	<label for="formGroupExampleInput" class="form-label">Escreva a descrição do produto.</label>
+	<div class="form-floating mb-3">
+		<textarea class="form-control" placeholder="" id="floatingTextarea2" style="height: 100px"></textarea>
+		<label for="floatingTextarea2">Descrição</label>
+	</div>
+
+	<label for="formGroupExampleInput" class="form-label">Adicione uma imagem ao produto.</label>
+	<div class="mb-3">
+		<input class="form-control" type="text" id="formFile">
+	</div>
+</div>
+<button @onclick = "CriaProduto" >Cria produto</button>
 @code {
+	private async void CriaProduto()
+	{
+		var Produto = new ProdutoRegistroDto()
+			{
+
+				Nome = "Coxinha",
+				Descricao = "Gostoso",
+				Preco = 6,
+				ImagemURL = "https://sabores-new.s3.amazonaws.com/public/2025/01/COXINHA-scaled.jpg",
+				CategoriaId = 1
+			};
+
+		var requisicao = new StringContent
+		(JsonSerializer.Serialize(Produto),
+		Encoding.UTF8,
+		Application.Json);
+
+		var Carteiro = Mediador.CreateClient();
+
+
+		var resposta = await Carteiro.PostAsync("https://localhost:7207/Produto/criar", requisicao);
+
+		if (resposta.IsSuccessStatusCode) ;
+		{
+			var ConteudoResposta = await resposta.Content.ReadFromJsonAsync<UsuarioRespostaDto>();
+
+		}
+
+	}
+
 
 }
