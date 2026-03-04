@@ -15,4 +15,8 @@
     <ProjectReference Include="..\MinhaSolucao.Biblioteca\MinhaCantina.Biblioteca.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Source\Pages\NovaPasta\" />
+  </ItemGroup>
+
 </Project>

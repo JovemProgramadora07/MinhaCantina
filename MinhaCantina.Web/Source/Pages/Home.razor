@@ -62,13 +62,22 @@
 
 
 @code {
-	private IEnumerable<ProdutoRespostaDto>? listaProdutos = Array.Empty<ProdutoRespostaDto>();
-	private Modal referenciaModal;
+    private IEnumerable<ProdutoRespostaDto>? listaProdutos = Array.Empty<ProdutoRespostaDto>();
 
-	protected override async Task OnInitializedAsync()
-	{
-		var cliente = ClientFactory.CreateClient();
-		using var resposta = await cliente.GetAsync("https://localhost:7207/Produto/pegar_todos");
+    
+    private IEnumerable<CategoriaRespostaDto>? listaCategorias = Array.Empty<CategoriaRespostaDto>();
+    private int categoriaSelecionadaId;
+
+    private Modal referenciaModal;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var cliente = ClientFactory.CreateClient();
+        using var respostaProdutos = await cliente.GetAsync("https://localhost:7207/Produto/pegar_todos");
+        if (respostaProdutos.IsSuccessStatusCode)
+        {
+            listaProdutos = await respostaProdutos.Content.ReadFromJsonAsync<IEnumerable<ProdutoRespostaDto>>();
+        }
 
 		if (resposta.IsSuccessStatusCode)
 		{

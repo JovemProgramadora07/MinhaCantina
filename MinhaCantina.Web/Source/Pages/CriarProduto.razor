@@ -74,5 +74,20 @@
 
 	}
 
+	private IEnumerable<CategoriaRespostaDto>? listaCategorias = Array.Empty<CategoriaRespostaDto>();
+	private int categoriaSelecionadaId;
 
+	private Modal referenciaModal;
+
+	protected override async Task OnInitializedAsync()
+	{
+		var cliente = Mediador.CreateClient();
+		using var respostaCategorias = await cliente.GetAsync("https://localhost:7207/Categoria/pegar_todas");
+		if (respostaCategorias.IsSuccessStatusCode)
+		{
+			var resultadoCat = await respostaCategorias.Content.ReadFromJsonAsync<IEnumerable<CategoriaRespostaDto>>();
+			listaCategorias = resultadoCat ?? Array.Empty<CategoriaRespostaDto>();
+		}
+
+	}
 }
