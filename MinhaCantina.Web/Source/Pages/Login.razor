@@ -4,8 +4,9 @@
 @using System.Text
 @using static System.Net.Mime.MediaTypeNames
 @inject IHttpClientFactory Mediador
-@inject IJSRuntime JS
 @rendermode InteractiveServer
+@inject NavigationManager Navigation
+
 
 <div class="login-container d-flex align-items-center justify-content-center">
 	<div class="login-card row shadow-lg overflow-hidden justify-content-center">
@@ -39,6 +40,10 @@
 					Entrar
 				</button>
 
+				@if (!string.IsNullOrEmpty(erro))
+				{
+					<p class="text-danger">@erro</p>
+				}
 			</form>
 		</div>
 	</div>
@@ -49,6 +54,7 @@
 
 @code {
 	private UsuarioLoginDto LoginDto { get; set; } = new UsuarioLoginDto();
+	private string erro = string.Empty;
 
 	private async void Autenticar()
 	{
@@ -66,7 +72,12 @@
 		if (resposta.IsSuccessStatusCode)
 		{
 			var conteudoResposta = await resposta.Content.ReadFromJsonAsync<UsuarioRespostaDto>();
-			await JS.InvokeVoidAsync("alert", conteudoResposta.Nome);
+			Navigation.NavigateTo("/cria-produto", true);
+		}
+		else
+		{
+			erro = await resposta.Content.ReadAsStringAsync();
+			StateHasChanged();
 		}
 	}
 }
