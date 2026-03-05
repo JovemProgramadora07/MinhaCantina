@@ -21,8 +21,8 @@
 			<ul class="navbar-nav ms-auto align-item-center">
 				<li class="nav-item">
 					<div class="input-group">
-						<input type="text" id="searchInput" class="form-control" placeholder="Buscar alimento...">
-						<span class="input-group-text text-white" style="background-color:#f0aa42; border-color: #f0aa42;">🔍</span>
+						<input @bind="_termoBusca" type="text" id="searchInput" class="form-control" placeholder="Buscar alimento...">
+						<button class="input-group-text text-white" style="background-color:#f0aa42; border-color: #f0aa42;" @onclick="FiltrarProdutos">🔍</button>
 					</div>
 				</li>
 			</ul>
@@ -79,31 +79,68 @@
 
 <section class="container mt-4">
 	<div class="row mb-4">
-		@foreach (var produto in listaProdutos)
+		@foreach (var produto in _listaExibida)
 		{
 			<Card Produto="produto" VerMais="AbrirDetalhes" />
 		}
 	</div>
-	<Modal @ref="referenciaModal"></Modal>
+	<Modal @ref="_referenciaModal"></Modal>
 </section>
 
 
 @code {
-	private IEnumerable<ProdutoRespostaDto>? listaProdutos = Array.Empty<ProdutoRespostaDto>();
-	private Modal referenciaModal;
+	private IEnumerable<ProdutoRespostaDto>? _todosProdutos =[];
+	private IEnumerable<ProdutoRespostaDto> _listaExibida = [];  
+	private Modal _referenciaModal = null!;
+	private string _termoBusca = "";
 
 	protected override async Task OnInitializedAsync()
 	{
 		var cliente = ClientFactory.CreateClient();
-		using var respostaProdutos = await cliente.GetAsync("https://localhost:7207/Produto/pegar_todos");
-		if (respostaProdutos.IsSuccessStatusCode)
+
+		try
 		{
-			listaProdutos = await respostaProdutos.Content.ReadFromJsonAsync<IEnumerable<ProdutoRespostaDto>>();
+			using var respostaProdutos = await cliente.GetAsync("https://localhost:7207/Produto/pegar_todos");
+			if (respostaProdutos.IsSuccessStatusCode)
+			{
+				_todosProdutos = await respostaProdutos.Content.ReadFromJsonAsync<IEnumerable<ProdutoRespostaDto>>() ?? [];
+			}
+		}
+		catch
+		{
+			Console.WriteLine("Ocorreu um erro");
+		}
+		finally
+		{
+			_listaExibida = _todosProdutos;
 		}
 	}
 
+	private void BuscarNoEnter(KeyboardEventArgs e)
+	{
+		if (e.Key == "Enter")
+		{
+			FiltrarProdutos(e);
+		}
+	}
+
+	private void FiltrarProdutos(EventArgs e)
+	{
+
+		if (string.IsNullOrWhiteSpace(_termoBusca))
+		{
+			_listaExibida = _todosProdutos;
+		}
+		else
+		{
+			_listaExibida = _todosProdutos?.Where(p =>
+				p.Nome!.Contains(_termoBusca, StringComparison.OrdinalIgnoreCase)).ToList() ?? [];
+		}
+	}
+
+
 	private void AbrirDetalhes(ProdutoRespostaDto produto)
 	{
-		referenciaModal.Abrir(produto);
+		_referenciaModal.Abrir(produto);
 	}
 }
