@@ -1,95 +1,156 @@
 ﻿@page "/cria-produto"
 @using MinhaCantina.Biblioteca.DTOs
-@using System.Text.Json
-@using MinhaCantina.Biblioteca.Modelos
-@using System.Text
-@using static System.Net.Mime.MediaTypeNames
 @inject IHttpClientFactory Mediador
 @rendermode InteractiveServer
 
+<PageTitle>Criar um Produto | Minha Cantina</PageTitle>
 
-<PageTitle>Criar um Produto</PageTitle>
+<div class="mc-page-container">
+    <header class="mc-header shadow-sm">
+        <div class="container d-flex align-items-center justify-content-between">
+            <h2 class="mc-title">Novo Produto</h2>
+            <a href="/" class="btn btn-outline-secondary btn-sm">Voltar ao Início</a>
+        </div>
+    </header>
 
-<header class="container">
-	<div class="d-flex align-items-center p-3 my-3 text-black bg bg-purple rounded shadow-sm">
+    <main class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="mc-form-card shadow">
 
-		<h3 class="my-3 p-3 bg-body rounded shadow-sm">Registre os produtos aqui</h3>
+                    <div class="row g-4">
+                        <div class="col-md-5 text-center border-end">
+                            <label class="form-label fw-bold">Preview do Produto</label>
+                            <div class="mc-image-preview">
+                                @if (string.IsNullOrEmpty(_produto.ImagemURL))
+                                {
+                                    <div class="mc-placeholder">
+                                        <i class="bi bi-image"></i>
+                                        <span>Sem imagem</span>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <img src="@_produto.ImagemURL" class="img-fluid rounded" alt="Preview" />
+                                }
+                            </div>
+                            <div class="mt-3 text-start">
+                                <label class="form-label">URL da Imagem</label>
+                                <input @bind="_produto.ImagemURL" @bind:event="oninput" type="text" class="form-control" placeholder="https://...">
+                            </div>
+                        </div>
 
-	</div>
-</header>
+                        <div class="col-md-7">
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Nome do Produto</label>
+                                <input @bind="_produto.Nome" type="text" class="form-control form-control-lg" placeholder="Ex: Coca-Cola 350ml">
+                            </div>
 
-<main class="container">
-	<div class="p-4 p-md-5 mb-4 rounded text-body-emphasis bg-body-secondary" style="--bs-border-opacity: .5;">
-		<div class="mb-3 ">
-			<label for="formGroupExampleInput" class="form-label">Insira o nome do produto.</label>
-			<input @bind="Produto.Nome" type="text" class="form-control d-inline-flex focus-ring py-1 px-2 text-decoration-none border rounded-2" id="formGroupExampleInput" placeholder="Nome">
-		</div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">Preço (R$)</label>
+                                    <input @bind="_produto.Preco" type="number" step="0.01" class="form-control" placeholder="0,00">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Categoria</label>
+                                    <div class="input-group">
+                                        <select @bind="_produto.CategoriaId" class="form-select mc-select-custom">
+                                            <option value="0" disabled selected>Selecione uma categoria...</option>
+                                            @foreach (var cat in _listaCategorias)
+                                            {
+                                                <option value="@cat.Id">@cat.Nome</option>
+                                            }
+                                        </select>
 
-		<label for="formGroupExampleInput" class="form-label w-25">Insira o preço.</label>
-		<div class="input-group mb-3">
-			<input @bind="Produto.Preco" type="text" class="form-control" aria-label="Insira o preço">
-		</div>
+                                        <button class="btn btn-outline-warning mc-btn-add"
+                                                type="button"
+                                                @onclick="AbrirModalCategoria"
+                                                title="Cadastrar nova categoria">
+                                            <span class="fw-bold">+</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
 
-		<label for="formGroupExampleInput" class="form-label">Escreva a descrição do produto.</label>
-		<div class="form-floating mb-3">
-			<textarea @bind="Produto.Descricao" class="form-control" placeholder="" id="floatingTextarea2" style="height: 100px"></textarea>
-			<label for="floatingTextarea2">Descrição</label>
-		</div>
+                            <ModalCategoria @ref="_modalCategoriaRef" OnCategoriaCriada="AtualizarCategorias" />
 
-		<select class="form-select" aria-label="Default select example">
-			<option disabled selected>Selecione uma categoria.</option>
-			@foreach (var categoria in listaCategorias)
-			{
-				<option value="@categoria.Id">
-					@categoria.Nome
-				</option>
-			}
-		</select>
+                            <div class="mb-4">
+                                <label class="form-label fw-bold">Descrição</label>
+                                <textarea @bind="_produto.Descricao" class="form-control" rows="3" placeholder="Detalhes do produto..."></textarea>
+                            </div>
 
-		<label for="formGroupExampleInput" class="form-label">Adicione uma imagem ao produto.</label>
-		<div class="mb-3">
-			<input @bind="Produto.ImagemURL" class="form-control" type="text" id="formFile">
-		</div>
-		<button class="border border-4 rounded-3 w-50 p-3 p-sm" @onclick="CriaProduto">Cria produto</button>
-	</div>
-</main>
+                            <button class="mc-btn-save w-100" @onclick="CriaProduto" disabled="@_isEnviando">
+                                @if (_isEnviando)
+                                {
+                                    <span class="spinner-border spinner-border-sm me-2"></span>
+                                    <span>Salvando...</span>
+                                }
+                                else
+                                {
+                                    <span>Cadastrar Produto</span>
+                                }
+                            </button>
+                        </div>
+                    </div>
 
-
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
 
 @code {
-	private ProdutoRegistroDto Produto = new ProdutoRegistroDto();
+    private ProdutoRegistroDto _produto = new();
+    private IEnumerable<CategoriaRespostaDto> _listaCategorias = [];
+    private ModalCategoria? _modalCategoriaRef;
+    private bool _isEnviando;
 
-	private async void CriaProduto()
-	{
-		var requisicao = new StringContent
-		(JsonSerializer.Serialize(Produto),
-		Encoding.UTF8,
-		Application.Json);
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var cliente = Mediador.CreateClient();
+            var resposta = await cliente.GetFromJsonAsync<IEnumerable<CategoriaRespostaDto>>("https://localhost:7207/Categoria/pegar_todos");
+            _listaCategorias = resposta ?? [];
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erro ao carregar categorias: {ex.Message}");
+        }
+    }
 
-		var Carteiro = Mediador.CreateClient();
-		var resposta = await Carteiro.PostAsync("https://localhost:7207/Produto/criar", requisicao);
+    private async Task CriaProduto()
+    {
+        if (_produto.CategoriaId == 0) return;
 
-		if (resposta.IsSuccessStatusCode)
-		{
-			var ConteudoResposta = await resposta.Content.ReadFromJsonAsync<UsuarioRespostaDto>();
-		}
+        _isEnviando = true;
+        try
+        {
+            var cliente = Mediador.CreateClient();
 
-	}
+            var resposta = await cliente.PostAsJsonAsync("https://localhost:7207/Produto/criar", _produto);
 
-	private IEnumerable<CategoriaRespostaDto>? listaCategorias = Array.Empty<CategoriaRespostaDto>();
-	private int categoriaSelecionadaId;
+            if (resposta.IsSuccessStatusCode)
+            {
+                _produto = new ProdutoRegistroDto();
+            }
+        }
+        finally
+        {
+            _isEnviando = false;
+        }
+    }
 
-	private Modal referenciaModal;
+    private void AbrirModalCategoria()
+    {
+        _modalCategoriaRef?.Exibir();
+    }
 
-	protected override async Task OnInitializedAsync()
-	{
-		var cliente = Mediador.CreateClient();
-		using var respostaCategorias = await cliente.GetAsync("https://localhost:7207/Categoria/pegar_todos");
-		if (respostaCategorias.IsSuccessStatusCode)
-		{
-			var resultadoCat = await respostaCategorias.Content.ReadFromJsonAsync<IEnumerable<CategoriaRespostaDto>>();
-			listaCategorias = resultadoCat ?? Array.Empty<CategoriaRespostaDto>();
-		}
-
-	}
+    private async Task AtualizarCategorias()
+    {
+        var cliente = Mediador.CreateClient();
+        var resposta = await cliente.GetFromJsonAsync<IEnumerable<CategoriaRespostaDto>>("https://localhost:7207/Categoria/pegar_todos");
+        _listaCategorias = resposta ?? [];
+        StateHasChanged();
+    }
 }

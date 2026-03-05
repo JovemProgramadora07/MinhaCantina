@@ -1,0 +1,111 @@
+﻿@using System.Net.Http.Headers
+@using System.Net.Mime
+@using System.Text.Json
+@using System.Text
+@using MinhaCantina.Biblioteca.DTOs
+@inject IHttpClientFactory Mediador
+
+@if (_isVisible)
+{
+    <div class="mc-modal-overlay">
+        <div class="mc-modal-card shadow-lg">
+            <div class="mc-modal-header">
+                <h5 class="mc-modal-title">Nova Categoria</h5>
+                <button type="button" class="mc-close-btn" @onclick="Fechar">&times;</button>
+            </div>
+
+            <div class="mc-modal-body">
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Nome da Categoria</label>
+                    <input type="text" @bind="_novaCategoriaNome" class="form-control form-control-lg"
+                           placeholder="Ex: LANCHES, SOBREMESAS..." @onkeypress="HandleKeyPress" />
+                    @if (_mostrarErro)
+                    {
+                        <small class="text-danger mt-1 d-block">Por favor, insira um nome válido.</small>
+                    }
+                </div>
+            </div>
+
+            <div class="mc-modal-footer">
+                <button class="btn btn-light mc-btn-cancel" @onclick="Fechar" disabled="@_isSalvando">
+                    Cancelar
+                </button>
+                <button class="btn mc-btn-save-cat" @onclick="SalvarCategoria" disabled="@_isSalvando">
+                    @if (_isSalvando)
+                    {
+                        <span class="spinner-border spinner-border-sm me-2"></span>
+                        <span>Salvando...</span>
+                    }
+                    else
+                    {
+                        <span>Criar Categoria</span>
+                    }
+                </button>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private bool _isVisible = false;
+    private bool _isSalvando = false;
+    private bool _mostrarErro = false;
+    private string _novaCategoriaNome = "";
+
+    [Parameter] public EventCallback OnCategoriaCriada { get; set; }
+
+    public void Exibir()
+    {
+        _novaCategoriaNome = "";
+        _mostrarErro = false;
+        _isVisible = true;
+        StateHasChanged();
+    }
+
+    public void Fechar()
+    {
+        _isVisible = false;
+        StateHasChanged();
+    }
+
+    private async Task HandleKeyPress(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter") await SalvarCategoria();
+    }
+
+    private async Task SalvarCategoria()
+    {
+        if (string.IsNullOrWhiteSpace(_novaCategoriaNome))
+        {
+            _mostrarErro = true;
+            return;
+        }
+
+        _isSalvando = true;
+        _mostrarErro = false;
+
+        try
+        {
+            var cliente = Mediador.CreateClient();
+            var novaCat = new CategoriaRegistroDto() { Nome = _novaCategoriaNome.ToUpper() };
+
+            var requisicao = new StringContent(JsonSerializer.Serialize(novaCat), Encoding.UTF8, MediaTypeNames.Application.Json);
+            var resposta = await cliente.PostAsync("https://localhost:7207/Categoria/criar", requisicao);
+
+            if (resposta.IsSuccessStatusCode)
+            {
+                await OnCategoriaCriada.InvokeAsync();
+                Fechar();
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erro ao criar categoria: {ex.Message}");
+        }
+        finally
+        {
+            _isSalvando = false;
+        }
+    }
+
+}

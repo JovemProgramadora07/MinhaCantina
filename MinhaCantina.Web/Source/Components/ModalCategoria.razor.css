@@ -1,0 +1,95 @@
+﻿.mc-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(6px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 99999;
+    padding: 20px;
+}
+
+.mc-modal-card {
+    background: white;
+    width: 100%;
+    max-width: 450px;
+    border-radius: 20px;
+    overflow: hidden;
+    animation: mc-pop-in 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes mc-pop-in {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.mc-modal-header {
+    padding: 20px 25px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.mc-modal-title {
+    margin: 0;
+    font-weight: 800;
+    color: #333;
+}
+
+.mc-close-btn {
+    background: none;
+    border: none;
+    font-size: 28px;
+    color: #aaa;
+    cursor: pointer;
+    line-height: 1;
+}
+
+    .mc-close-btn:hover {
+        color: #ff4444;
+    }
+
+.mc-modal-body {
+    padding: 25px;
+}
+
+.mc-modal-footer {
+    padding: 20px 25px;
+    background: #fcfcfc;
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+}
+
+.mc-btn-cancel {
+    border-radius: 12px;
+    padding: 10px 20px;
+    font-weight: 600;
+}
+
+.mc-btn-save-cat {
+    background: #ffcc00;
+    color: #000;
+    border: none;
+    border-radius: 12px;
+    padding: 10px 25px;
+    font-weight: 700;
+    transition: 0.2s;
+}
+
+    .mc-btn-save-cat:hover:not(:disabled) {
+        background: #f0aa42;
+        transform: translateY(-2px);
+    }
