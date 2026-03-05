@@ -1,101 +1,150 @@
-﻿.modal-media {
-    width: 60%; /* Define que a imagem ocupa 60% da largura do modal */
-    margin: 1.5rem auto 0; /* Centraliza horizontalmente e dá espaço no topo */
-    aspect-ratio: 1 / 1; /* Força o formato quadrado perfeito */
-    overflow: hidden;
-    border-radius: 8px; /* Cantos levemente arredondados para um look moderno */
-    border: 1px solid #eee;
-}
-
-    .modal-media img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover; /* Garante que a foto preencha o quadrado sem distorcer */
-        display: block;
-    }
-
-
-/* Garante que o modal não cresça além da tela em dispositivos pequenos */
-.modal-container {
-    max-width: 450px;
-    max-height: 90vh; /* Máximo de 90% da altura da tela */
-    display: flex;
-    flex-direction: column;
-    background: white;
-    border-radius: 12px;
-    overflow: hidden;
-}
-
-.modal-header {
-    padding: 1rem 1.5rem;
-    border-bottom: 1px solid #eee;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-/* Ajuste no corpo para o texto não colar na imagem */
-.modal-body {
-    padding: 1rem 1.5rem;
-    text-align: center; /* Centraliza o texto para alinhar com a imagem quadrada */
-}
-
-.modal-overlay {
+﻿/* Overlay que cobre a tela inteira */
+.mc-overlay {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(4px); /* Efeito de desfoque no fundo */
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(8px);
     display: flex;
-    justify-content: center;
     align-items: center;
-    z-index: 1000;
+    justify-content: center;
+    z-index: 99999; /* Acima de qualquer z-index do Bootstrap */
+    padding: 15px;
 }
 
-.modal-footer {
-    padding: 1rem 1.5rem;
-    border-top: 1px solid #eee;
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
+
+
+/* O "Corpo" do Modal */
+.mc-card {
+    background: #ffffff;
+    width: 100%;
+    max-width: 650px;
+    border-radius: 24px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    animation: mc-slide-up 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Botões */
-.btn-primary {
-    background: #007bff;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 6px;
-    cursor: pointer;
-}
-
-.btn-secondary {
-    background: #6c757d;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 6px;
-    cursor: pointer;
-}
-
-.close-btn {
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-}
-
-@keyframes fadeIn {
+@keyframes mc-slide-up {
     from {
+        transform: translateY(30px);
         opacity: 0;
-        transform: translateY(-20px);
     }
 
     to {
-        opacity: 1;
         transform: translateY(0);
+        opacity: 1;
     }
 }
+
+/* Container Flex para alinhar Imagem e Texto */
+.mc-flex-container {
+    display: flex;
+    flex-wrap: wrap; /* Para quebrar linha no mobile */
+}
+
+/* Lado da Imagem */
+.mc-image-box {
+    flex: 1 1 280px;
+    background: #fdfdfd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+    .mc-image-box img {
+        max-width: 100%;
+        height: auto;
+        max-height: 300px;
+        object-fit: contain;
+    }
+
+/* Lado do Texto */
+.mc-details {
+    flex: 1 1 320px;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.mc-product-title {
+    font-size: 28px;
+    font-weight: 800;
+    color: #1a1a1a;
+    margin: 0 0 12px 0;
+}
+
+.mc-product-description {
+    font-size: 16px;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 24px;
+}
+
+/* Rodapé do Modal: Preço e Botão */
+.mc-action-area {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.mc-price-wrapper {
+    color: #2d2d2d;
+}
+
+.mc-currency {
+    font-size: 14px;
+    font-weight: 600;
+    margin-right: 4px;
+}
+
+.mc-amount {
+    font-size: 24px;
+    font-weight: 800;
+}
+
+.mc-btn-primary {
+    background: #ffcc00; /* Cor de destaque da Cantina */
+    color: #000;
+    border: none;
+    padding: 14px 28px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+    .mc-btn-primary:hover {
+        background: #f5c200;
+        transform: translateY(-2px);
+    }
+
+/* Botão X de fechar */
+.mc-close-trigger {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #fff;
+    border: 1px solid #eee;
+    font-size: 22px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    z-index: 10;
+    transition: 0.2s;
+}
+
+    .mc-close-trigger:hover {
+        background: #f8f8f8;
+        color: #ff4444;
+    }

@@ -1,13 +1,11 @@
 ﻿@using MinhaCantina.Biblioteca.DTOs
-@inject IJSRuntime JS
 @rendermode InteractiveServer
 
 <div class="col-sm-6 col-md-4 col-lg-3">
 
 	<div class="card card-product shadow-sm h-100">
-		<span class="badge-stock @PegaCor()">@StatusProduto</span>
-		<img src="imagens/brownie.webp" class="card-img-top" alt="...">
-
+		<span class="badge-stock @PegaCor()">@PegaStatus()</span>
+		<img src="@Produto.ImagemURL" class="card-img-top" alt="...">
 
 		<div class="card-body">
 			<h5 class="card-title fw-bold mb-1">@Produto.Nome</h5>
@@ -20,39 +18,43 @@
 	</div>
 </div>
 @code {
-	[Parameter] public ProdutoRespostaDto Produto { get; set; }
+	[Parameter] public required ProdutoRespostaDto Produto { get; set; }
 	[Parameter] public Status StatusProduto { get; set; } = Status.Disponivel;
-	[Parameter] public EventCallback <ProdutoRespostaDto> VerMais { get; set; }
+	[Parameter] public EventCallback<ProdutoRespostaDto> VerMais { get; set; }
 
 	protected override void OnInitialized()
 	{
-		Array values = Enum.GetValues(typeof(Status));
-		Random random = new Random();
-		Status randomBar = (Status)values.GetValue(random.Next(values.Length));
+		var values = Enum.GetValues(typeof(Status));
+		var random = new Random();
+		var randomBar = (Status)(values.GetValue(random.Next(values.Length)) ?? 0);
 		StatusProduto = randomBar;
 	}
 
 	public enum Status
 	{
-		Disponivel,
 		Esgotado,
 		PoucasUnidades,
+		Disponivel,
 	}
 
 	private string PegaCor()
 	{
-		switch (StatusProduto)
+		return StatusProduto switch
 		{
-			case Status.Disponivel:
-				return "bg-success";
-
-			case Status.Esgotado:
-				return "bg-danger";
-
-			default:
-				return "bg-warning";
-		}
+			Status.Disponivel => "bg-success",
+			Status.Esgotado => "bg-danger",
+			_ => "bg-warning"
+		};
 	}
 
+	private string PegaStatus()
+	{
+		return StatusProduto switch
+		{
+			Status.Disponivel => "Disponível",
+			Status.Esgotado => "Esgotado",
+			_ => "Poucas Unidades"
+		};
+	}
 
 }
